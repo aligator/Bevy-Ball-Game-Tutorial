@@ -1,7 +1,7 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 use rand::random;
 
-use crate::plugins::common::{
+use super::super::common::{
     confine_entity,
     resources::{sound, SoundHandles},
 };
@@ -35,6 +35,12 @@ pub fn spawn_enemies(
 
     for _ in 0..NUMBER_OF_ENEMIES {
         commands.spawn(enemy(window, asset_server.clone()));
+    }
+}
+
+pub fn despawn_enemies(mut commands: Commands, enemy_query: Query<Entity, With<Enemy>>) {
+    for entity in enemy_query.iter() {
+        commands.entity(entity).despawn();
     }
 }
 

@@ -1,8 +1,18 @@
 use bevy::prelude::*;
 
-use crate::plugins::common::events::GameOver;
+use crate::AppState;
+
+use super::super::common::events::GameOver;
 
 use super::resources::{HighScores, Score};
+
+pub fn insert_score(mut commands: Commands) {
+    commands.insert_resource(Score::default());
+}
+
+pub fn remove_score(mut commands: Commands) {
+    commands.remove_resource::<Score>();
+}
 
 pub fn update_score(score: Res<Score>) {
     if score.is_changed() {
@@ -10,9 +20,10 @@ pub fn update_score(score: Res<Score>) {
     }
 }
 
-pub fn handle_game_over(mut game_over_event_reader: EventReader<GameOver>) {
+pub fn handle_game_over(mut commands: Commands, mut game_over_event_reader: EventReader<GameOver>) {
     for game_over in game_over_event_reader.iter() {
         println!("Game over! Score: {}", game_over.score);
+        commands.insert_resource(NextState(Some(AppState::GameOver)));
     }
 }
 

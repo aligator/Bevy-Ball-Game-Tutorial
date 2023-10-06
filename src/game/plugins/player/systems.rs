@@ -1,6 +1,6 @@
 use bevy::{prelude::*, window::PrimaryWindow};
 
-use crate::plugins::{
+use super::super::{
     common::{
         confine_entity,
         events::GameOver,
@@ -30,6 +30,12 @@ pub fn spawn_player(
         },
         Player {},
     ));
+}
+
+pub fn despawn_player(mut commands: Commands, player_query: Query<Entity, With<Player>>) {
+    if let Ok(entity) = player_query.get_single() {
+        commands.entity(entity).despawn();
+    }
 }
 
 pub fn player_movement(
