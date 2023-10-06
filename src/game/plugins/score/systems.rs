@@ -20,10 +20,13 @@ pub fn update_score(score: Res<Score>) {
     }
 }
 
-pub fn handle_game_over(mut commands: Commands, mut game_over_event_reader: EventReader<GameOver>) {
+pub fn handle_game_over(
+    mut game_over_event_reader: EventReader<GameOver>,
+    mut next_app_state: ResMut<NextState<AppState>>,
+) {
     for game_over in game_over_event_reader.iter() {
         println!("Game over! Score: {}", game_over.score);
-        commands.insert_resource(NextState(Some(AppState::GameOver)));
+        next_app_state.set(AppState::GameOver);
     }
 }
 
